@@ -74,78 +74,91 @@ class _YourBooksPageState extends State<YourBooksPage> {
                   const Divider(
                     color: Colors.grey,
                   ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: localBookList.length,
-                    itemBuilder: ((context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewBookPage()
-                                  //here add params
-                                  ));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height / 16,
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.height / 4,
-                                    child: Text(
-                                      localBookList[index].title,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.height / 8,
-                                    child: Text(
-                                      localBookList[index].author,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      //dodac potwierdzenie czy na pewno usunąć jako popup czy coś
-                                      deleteBook(localBookList[index].id);
-                                    },
-                                    child: Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(10),
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: localBookList.length,
+                      itemBuilder: ((context, index) {
+                        return InkWell(
+                          onTap: () {
+                            int bookID = localBookList[index].id?.toInt() ?? 0;
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewBookPage(
+                                          bookID: bookID,
+                                          bookTitle: localBookList[index].title,
+                                          bookAuthor:
+                                              localBookList[index].author,
+                                          bookDescription:
+                                              localBookList[index].description,
+                                        )));
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height / 16,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.height /
+                                              4,
+                                      child: Text(
+                                        localBookList[index].title,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
                                       ),
-                                      child: const Center(
-                                        child: Text(
-                                          'X',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.height /
+                                              8,
+                                      child: Text(
+                                        localBookList[index].author,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        //dodac potwierdzenie czy na pewno usunąć jako popup czy coś
+                                        deleteBook(localBookList[index].id);
+                                      },
+                                      child: Container(
+                                        width: 25,
+                                        height: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            'X',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ]),
+                                  ]),
+                            ),
                           ),
-                        ),
-                      );
-                    }),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      color: Colors.grey,
+                        );
+                      }),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ],
