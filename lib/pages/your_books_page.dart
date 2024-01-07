@@ -92,8 +92,12 @@ class _YourBooksPageState extends State<YourBooksPage> {
                                           bookTitle: localBookList[index].title,
                                           bookAuthor:
                                               localBookList[index].author,
+                                          bookCategory:
+                                              localBookList[index].category,
                                           bookDescription:
                                               localBookList[index].description,
+                                          bookPhoto:
+                                              localBookList[index].imageBytes,
                                         )));
                           },
                           child: Padding(

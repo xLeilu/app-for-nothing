@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:appfornothing/models/book_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:appfornothing/services/services.dart';
 
 class BookshelfHelper {
   BookshelfHelper._privateConstructor();
@@ -29,7 +31,9 @@ class BookshelfHelper {
         id INTEGER PRIMARY KEY,
         title TEXT,
         author TEXT,
-        description TEXT
+        category TEXT,
+        description TEXT,
+        photo BLOB,
       )
     ''');
   }
@@ -50,5 +54,16 @@ class BookshelfHelper {
   Future<int> removeBook(int bookId) async {
     Database db = await instance.database;
     return await db.delete('bookshelf', where: 'id = ?', whereArgs: [bookId]);
+  }
+
+  Future<void> updatePhoto(int bookId, String photoPath) async {
+    Database db = await instance.database;
+    Uint8List imageBytes = await Services().getImageBytes(photoPath);
+    await db.update(
+      'bookshelf',
+      {'photo': imageBytes},
+      where: 'id = ?',
+      whereArgs: [bookId],
+    );
   }
 }

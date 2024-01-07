@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:appfornothing/database/bookshelf_helper.dart';
 import 'package:appfornothing/models/book_model.dart';
+import 'package:appfornothing/services/services.dart';
 import 'package:flutter/material.dart';
 
 class AddBookPage extends StatefulWidget {
@@ -17,18 +20,23 @@ class _AddBookPageState extends State<AddBookPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController authorController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
 
-  void _doSomething() {
+  void _doSomething() async {
     String title = titleController.text;
     String author = authorController.text;
+    String category = categoryController.text;
     String description = descriptionController.text;
+    Uint8List photoBytes =
+        await Services().getImageBytes('assets/path/to/image.jpg');
 
-    print('Title: $title');
-    print('Author: $author');
-    print('Description: $description');
-
-    BookshelfHelper.instance
-        .add(BookModel(title: title, author: author, description: description));
+    BookshelfHelper.instance.add(BookModel(
+      title: title,
+      author: author,
+      category: category,
+      description: description,
+      imageBytes: photoBytes,
+    ));
 
     setState(() {});
     widget.refreshBooksPage();
@@ -71,6 +79,13 @@ class _AddBookPageState extends State<AddBookPage> {
                     controller: authorController,
                     decoration: InputDecoration(
                       labelText: 'Author',
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: categoryController,
+                    decoration: InputDecoration(
+                      labelText: 'Category',
                     ),
                   ),
                   SizedBox(height: 20),
