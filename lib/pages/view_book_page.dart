@@ -1,16 +1,27 @@
+import 'package:appfornothing/database/bookshelf_helper.dart';
+import 'package:appfornothing/models/book_model.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 
 class ViewBookPage extends StatefulWidget {
   final int bookID;
   final String bookTitle;
   final String bookAuthor;
+  final String bookCategory;
   final String bookDescription;
+  final Uint8List bookPhoto;
+  final Function() refreshBooksPage;
+
   const ViewBookPage({
     super.key,
     required this.bookID,
     required this.bookTitle,
     required this.bookAuthor,
+    required this.bookCategory,
     required this.bookDescription,
+    required this.bookPhoto,
+    required this.refreshBooksPage,
   });
 
   @override
@@ -18,8 +29,37 @@ class ViewBookPage extends StatefulWidget {
 }
 
 class _ViewBookPageState extends State<ViewBookPage> {
-  void doPhoto() {
-    //tutaj fajnie otwiera aparat i można zrobić zdjęcie które następnie się dodaje do bazy i elo kurwa
+  late Uint8List bookImage;
+
+  final imagePicker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    bookImage = widget.bookPhoto;
+  }
+
+  Future<void> updateDBPhoto(int bookId, String photoPath) async {
+    await BookshelfHelper.instance.updatePhoto(bookId, photoPath);
+
+    BookModel updatedBook =
+        await BookshelfHelper.instance.getSingleBook(bookId);
+
+    setState(() {
+      bookImage = updatedBook.imageBytes;
+    });
+  }
+
+  Future<void> getImage() async {
+    final image = await imagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 25);
+
+    if (image != null && image.path.isNotEmpty) {
+      await updateDBPhoto(widget.bookID, image.path);
+      widget.refreshBooksPage();
+    } else {
+      debugPrint('No image selected');
+    }
   }
 
   @override
@@ -57,12 +97,15 @@ class _ViewBookPageState extends State<ViewBookPage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InkWell(
-                        onTap: () => doPhoto(),
-                        child: Image.asset(
-                          'assets/images/place_holder.png',
-                          fit: BoxFit.contain,
-                          height: MediaQuery.of(context).size.height / 3,
-                        ),
+                        onTap: getImage,
+                        child: widget.bookPhoto != null
+                            ? Image.memory(
+                                bookImage,
+                                fit: BoxFit.cover,
+                                height: MediaQuery.of(context).size.height / 3,
+                                width: MediaQuery.of(context).size.width / 2.5,
+                              )
+                            : const CircularProgressIndicator(),
                       ),
                     ),
                     SizedBox(
@@ -114,6 +157,13 @@ class _ViewBookPageState extends State<ViewBookPage> {
                               child: const Text(
                                 "Gatunek",
                                 style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text(
+                                widget.bookCategory.toString(),
+                                overflow: TextOverflow.visible,
+                                maxLines: 2,
                               )),
                         ],
                       ),

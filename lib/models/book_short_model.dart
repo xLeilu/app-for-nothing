@@ -1,29 +1,24 @@
-import 'dart:typed_data';
-
-class BookModel {
+class BookShortModel {
   final int? id;
   final String title;
   final String author;
   final String category;
   final String description;
-  final Uint8List imageBytes;
 
-  BookModel({
+  BookShortModel({
     this.id,
     required this.title,
     required this.author,
     required this.category,
     required this.description,
-    required this.imageBytes,
   });
 
-  factory BookModel.fromMap(Map<String, dynamic> json) => BookModel(
+  factory BookShortModel.fromMap(Map<String, dynamic> json) => BookShortModel(
         id: json['id'],
         title: json['title'],
         author: json['author'],
         category: json['category'],
         description: json['description'],
-        imageBytes: json['photo'],
       );
 
   Map<String, dynamic> toMap() {
@@ -33,7 +28,6 @@ class BookModel {
       'author': author,
       'category': category,
       'description': description,
-      'photo': imageBytes,
     };
   }
 }
