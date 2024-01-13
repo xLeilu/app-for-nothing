@@ -27,8 +27,8 @@ class _AddBookPageState extends State<AddBookPage> {
     String author = authorController.text;
     String category = categoryController.text;
     String description = descriptionController.text;
-    Uint8List photoBytes =
-        await Services().getImageBytes('assets/path/to/image.jpg');
+    Uint8List photoBytes = await Services()
+        .getImageBytesFromAssets('assets/images/place_holder.png');
 
     BookshelfHelper.instance.add(BookModel(
       title: title,
@@ -70,35 +70,35 @@ class _AddBookPageState extends State<AddBookPage> {
                 children: [
                   TextField(
                     controller: titleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Title',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: authorController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Author',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: categoryController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Category',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: descriptionController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Description',
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _doSomething,
-                    child: Text('Dodaj'),
+                    child: const Text('Dodaj'),
                   ),
                 ],
               ),

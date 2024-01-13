@@ -1,8 +1,7 @@
+import 'package:appfornothing/database/bookshelf_helper.dart';
+import 'package:appfornothing/models/book_model.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 
 class ViewBookPage extends StatefulWidget {
@@ -12,6 +11,7 @@ class ViewBookPage extends StatefulWidget {
   final String bookCategory;
   final String bookDescription;
   final Uint8List bookPhoto;
+  final Function() refreshBooksPage;
 
   const ViewBookPage({
     super.key,
@@ -21,6 +21,7 @@ class ViewBookPage extends StatefulWidget {
     required this.bookCategory,
     required this.bookDescription,
     required this.bookPhoto,
+    required this.refreshBooksPage,
   });
 
   @override
@@ -28,26 +29,36 @@ class ViewBookPage extends StatefulWidget {
 }
 
 class _ViewBookPageState extends State<ViewBookPage> {
-  late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late Uint8List bookImage;
 
-  void doPhoto() {
-    //tutaj fajnie otwiera aparat i można zrobić zdjęcie które następnie się dodaje do bazy i elo kurwa
+  final imagePicker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    bookImage = widget.bookPhoto;
   }
 
-  Future<void> _takePicture() async {
-    try {
-      await _initializeControllerFuture;
-      final path = join(
-        (await getTemporaryDirectory()).path,
-        '${DateTime.now()}.png',
-      );
-      await _controller.takePicture();
-      // Once the photo is taken, you can store the path or the image in SQFlite.
-      // You can use the `path` variable to save the image path in the database.
-      // Or use the `File` object to read the image and save the binary data in the database.
-    } catch (e) {
-      print("Error taking picture: $e");
+  Future<void> updateDBPhoto(int bookId, String photoPath) async {
+    await BookshelfHelper.instance.updatePhoto(bookId, photoPath);
+
+    BookModel updatedBook =
+        await BookshelfHelper.instance.getSingleBook(bookId);
+
+    setState(() {
+      bookImage = updatedBook.imageBytes;
+    });
+  }
+
+  Future<void> getImage() async {
+    final image = await imagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 25);
+
+    if (image != null && image.path.isNotEmpty) {
+      await updateDBPhoto(widget.bookID, image.path);
+      widget.refreshBooksPage();
+    } else {
+      debugPrint('No image selected');
     }
   }
 
@@ -86,20 +97,15 @@ class _ViewBookPageState extends State<ViewBookPage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InkWell(
-                        onTap: () => _takePicture,
-                        /*
-                        child: Image.asset(
-                          'assets/images/place_holder.png',
-                          fit: BoxFit.contain,
-                          height: MediaQuery.of(context).size.height / 3,
-                        ),
-                        */
+                        onTap: getImage,
                         child: widget.bookPhoto != null
                             ? Image.memory(
-                                widget.bookPhoto,
+                                bookImage,
                                 fit: BoxFit.cover,
+                                height: MediaQuery.of(context).size.height / 3,
+                                width: MediaQuery.of(context).size.width / 2.5,
                               )
-                            : CircularProgressIndicator(),
+                            : const CircularProgressIndicator(),
                       ),
                     ),
                     SizedBox(
