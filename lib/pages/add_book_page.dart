@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:appfornothing/database/bookshelf_helper.dart';
 import 'package:appfornothing/models/book_model.dart';
 import 'package:appfornothing/services/services.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class AddBookPage extends StatefulWidget {
@@ -30,6 +31,14 @@ class _AddBookPageState extends State<AddBookPage> {
     Uint8List photoBytes = await Services()
         .getImageBytesFromAssets('assets/images/place_holder.png');
 
+    BookModel sampleBook = BookModel(
+      title: title,
+      author: author,
+      category: category,
+      description: description,
+      imageBytes: photoBytes,
+    );
+
     BookshelfHelper.instance.add(BookModel(
       title: title,
       author: author,
@@ -37,6 +46,12 @@ class _AddBookPageState extends State<AddBookPage> {
       description: description,
       imageBytes: photoBytes,
     ));
+
+    DatabaseReference ref = FirebaseDatabase.instance.ref("book/321");
+
+    Map<String, dynamic> book = sampleBook.toMap();
+
+    await ref.set(book);
 
     setState(() {});
     widget.refreshBooksPage();
