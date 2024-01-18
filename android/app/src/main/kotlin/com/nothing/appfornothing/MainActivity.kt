@@ -1,4 +1,4 @@
-package com.example.appfornothing
+package com.nothing.appfornothing
 
 import io.flutter.embedding.android.FlutterActivity
 
