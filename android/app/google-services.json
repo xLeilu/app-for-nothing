@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1036911876955",
+    "firebase_url": "https://appfornothing-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "appfornothing",
+    "storage_bucket": "appfornothing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036911876955:android:4f14cb67f315f7cbd1187e",
+        "android_client_info": {
+          "package_name": "com.nothing.appfornothing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyeXlVZ4vff6qb4_MLdPZQSdrYn-Lnq80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
