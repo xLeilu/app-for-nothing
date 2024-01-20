@@ -29,7 +29,10 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text("Library App"),
+          title: const Text(
+            "Library App",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -52,14 +55,15 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
+                Text(
                   'Strona główna aplikacji',
                 ),
+                Text("Autor: Maciej Pliszka")
               ],
             ),
           ),

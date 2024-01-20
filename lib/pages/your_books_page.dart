@@ -2,6 +2,7 @@ import 'package:appfornothing/database/bookshelf_helper.dart';
 import 'package:appfornothing/models/book_model.dart';
 import 'package:appfornothing/pages/add_book_page.dart';
 import 'package:appfornothing/pages/view_book_page.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class YourBooksPage extends StatefulWidget {
@@ -24,6 +25,12 @@ class _YourBooksPageState extends State<YourBooksPage> {
     int id = bookID?.toInt() ?? 0;
     BookshelfHelper.instance.removeBook(id);
     refreshPage();
+  }
+
+  void deleteFirebase(String title) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref('books/$title');
+
+    await ref.remove();
   }
 
   Widget createList(BuildContext context) {
@@ -134,6 +141,8 @@ class _YourBooksPageState extends State<YourBooksPage> {
                                       onTap: () {
                                         //dodac potwierdzenie czy na pewno usunąć jako popup czy coś
                                         deleteBook(localBookList[index].id);
+                                        deleteFirebase(
+                                            localBookList[index].title);
                                       },
                                       child: Container(
                                         width: 25,

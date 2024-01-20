@@ -47,7 +47,7 @@ class _AddBookPageState extends State<AddBookPage> {
       imageBytes: photoBytes,
     ));
 
-    DatabaseReference ref = FirebaseDatabase.instance.ref("book/321");
+    DatabaseReference ref = FirebaseDatabase.instance.ref('books/$title');
 
     Map<String, dynamic> book = sampleBook.toMap();
 
@@ -86,31 +86,31 @@ class _AddBookPageState extends State<AddBookPage> {
                   TextField(
                     controller: titleController,
                     decoration: const InputDecoration(
-                      labelText: 'Title',
+                      labelText: 'Tytuł',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   TextField(
                     controller: authorController,
                     decoration: const InputDecoration(
-                      labelText: 'Author',
+                      labelText: 'Autor',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   TextField(
                     controller: categoryController,
                     decoration: const InputDecoration(
-                      labelText: 'Category',
+                      labelText: 'Kategoria',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   TextField(
                     controller: descriptionController,
                     decoration: const InputDecoration(
-                      labelText: 'Description',
+                      labelText: 'Opis',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: _doSomething,
                     child: const Text('Dodaj'),

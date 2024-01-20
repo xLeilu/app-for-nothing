@@ -1,8 +1,11 @@
 import 'package:appfornothing/database/bookshelf_helper.dart';
 import 'package:appfornothing/models/book_model.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
+
+import '../services/services.dart';
 
 class ViewBookPage extends StatefulWidget {
   final int bookID;
@@ -56,6 +59,24 @@ class _ViewBookPageState extends State<ViewBookPage> {
 
     if (image != null && image.path.isNotEmpty) {
       await updateDBPhoto(widget.bookID, image.path);
+
+      Uint8List imageBytes = await Services().getImageBytes(image.path);
+
+      BookModel sampleBook = BookModel(
+        title: widget.bookTitle,
+        author: widget.bookAuthor,
+        category: widget.bookCategory,
+        description: widget.bookDescription,
+        imageBytes: imageBytes,
+      );
+
+      Map<String, dynamic> book = sampleBook.toMap();
+
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref('books/${widget.bookTitle}');
+
+      //await ref.update(book);
+
       widget.refreshBooksPage();
     } else {
       debugPrint('No image selected');

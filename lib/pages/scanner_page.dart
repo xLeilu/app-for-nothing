@@ -34,7 +34,7 @@ class _ScannerPageState extends State<ScannerPage> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            color: Colors.black,
+            color: Colors.white,
             onPressed: () {
               Navigator.pop(context, true);
             },
@@ -62,14 +62,14 @@ class _ScannerPageState extends State<ScannerPage> {
                       }
                     });
                   },
-                  child: const Text('Open Scanner'),
+                  child: const Text('Otwórz skaner'),
                 ),
-                Text('Barcode Result: $barcode'),
+                Text('Kod kreskowy: $barcode'),
                 ElevatedButton(
                   onPressed: () {
                     _launchGoogleSearch(barcode);
                   },
-                  child: Text('Search on Google'),
+                  child: Text('Wyszukaj w google'),
                 ),
               ],
             ),
