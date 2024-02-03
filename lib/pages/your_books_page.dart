@@ -106,6 +106,8 @@ class _YourBooksPageState extends State<YourBooksPage> {
                                           bookPhoto:
                                               localBookList[index].imageBytes,
                                           refreshBooksPage: refreshPage,
+                                          bookLocation:
+                                              localBookList[index].location,
                                         )));
                           },
                           child: Padding(

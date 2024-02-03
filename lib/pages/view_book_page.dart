@@ -14,6 +14,7 @@ class ViewBookPage extends StatefulWidget {
   final String bookCategory;
   final String bookDescription;
   final Uint8List bookPhoto;
+  final String bookLocation;
   final Function() refreshBooksPage;
 
   const ViewBookPage({
@@ -24,6 +25,7 @@ class ViewBookPage extends StatefulWidget {
     required this.bookCategory,
     required this.bookDescription,
     required this.bookPhoto,
+    required this.bookLocation,
     required this.refreshBooksPage,
   });
 
@@ -68,6 +70,7 @@ class _ViewBookPageState extends State<ViewBookPage> {
         category: widget.bookCategory,
         description: widget.bookDescription,
         imageBytes: imageBytes,
+        location: widget.bookLocation,
       );
 
       Map<String, dynamic> book = sampleBook.toMap();

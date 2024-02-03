@@ -7,6 +7,7 @@ class BookModel {
   final String category;
   final String description;
   final Uint8List imageBytes;
+  final String location;
 
   BookModel({
     this.id,
@@ -15,6 +16,7 @@ class BookModel {
     required this.category,
     required this.description,
     required this.imageBytes,
+    required this.location,
   });
 
   factory BookModel.fromMap(Map<String, dynamic> json) => BookModel(
@@ -24,6 +26,7 @@ class BookModel {
         category: json['category'],
         description: json['description'],
         imageBytes: json['photo'],
+        location: json['location'],
       );
 
   Map<String, dynamic> toMap() {
@@ -34,6 +37,7 @@ class BookModel {
       'category': category,
       'description': description,
       'photo': imageBytes,
+      'location': location,
     };
   }
 }

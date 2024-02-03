@@ -5,6 +5,7 @@ import 'package:appfornothing/models/book_model.dart';
 import 'package:appfornothing/services/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AddBookPage extends StatefulWidget {
   final Function() refreshBooksPage;
@@ -23,6 +24,13 @@ class _AddBookPageState extends State<AddBookPage> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
 
+  Future<String> getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
+
+    return position.toString();
+  }
+
   void _doSomething() async {
     String title = titleController.text;
     String author = authorController.text;
@@ -31,12 +39,15 @@ class _AddBookPageState extends State<AddBookPage> {
     Uint8List photoBytes = await Services()
         .getImageBytesFromAssets('assets/images/place_holder.png');
 
+    String location = await getLocation();
+
     BookModel sampleBook = BookModel(
       title: title,
       author: author,
       category: category,
       description: description,
       imageBytes: photoBytes,
+      location: location,
     );
 
     BookshelfHelper.instance.add(BookModel(
@@ -45,6 +56,7 @@ class _AddBookPageState extends State<AddBookPage> {
       category: category,
       description: description,
       imageBytes: photoBytes,
+      location: location,
     ));
 
     DatabaseReference ref = FirebaseDatabase.instance.ref('books/$title');

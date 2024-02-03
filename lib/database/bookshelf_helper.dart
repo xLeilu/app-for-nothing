@@ -33,7 +33,8 @@ class BookshelfHelper {
         author TEXT,
         category TEXT,
         description TEXT,
-        photo BLOB
+        photo BLOB,
+        location TEXT
       )
     ''');
   }
@@ -68,7 +69,8 @@ class BookshelfHelper {
       'title',
       'author',
       'category',
-      'description'
+      'description',
+      'location'
     ];
 
     var books =
